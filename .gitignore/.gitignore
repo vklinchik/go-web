@@ -1,0 +1,6 @@
+# log files
+*.log
+
+# binaries
+go-web
+
