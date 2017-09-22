@@ -45,7 +45,7 @@ func GetUser() func(*iris.Context) {
 		if userp == nil {
 			err = errors.New("User not found.")
 			log.Println(err)
-			ctx.JSON(iris.StatusOK, "")
+			ctx.JSON(iris.StatusOK, map[string]string{"error": "user not found"})
 		} else {
 			ctx.JSON(iris.StatusOK, *userp)
 		}
