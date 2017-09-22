@@ -20,6 +20,7 @@ func NewIrisWS() *iris.Framework {
 	{
 		api.Get("/", routes.Index)
 		api.Get("/user/:id", routes.GetUser())
+		api.Post("/user", routes.AddUser())
 		/*
 		api.Post("/snapshot", routes.CreateSnapshot(producer, cliCtx, srCtx))
 		api.Get("/snapshot", routes.GetSnapshotInfo(producer, cliCtx))

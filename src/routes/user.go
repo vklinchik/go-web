@@ -3,6 +3,7 @@ package routes
 import (
 	"gopkg.in/kataras/iris.v6"
 	"log"
+	"xlog"
 	"errors"
 )
 
@@ -33,9 +34,20 @@ func getUser(id int) *User {
 	return nil
 }
 
+func nextId() int {
+	maxId := 0
+	for i := 0; i < len(users); i++ {
+		if users[i].Id > maxId {
+			maxId = users[i].Id
+		}
+	}
+	maxId++
+	return maxId
+}
+
 func GetUser() func(*iris.Context) {
 	return func(ctx *iris.Context) {
-
+		xlog.Debug("Executed GetUser")
 		id, err := ctx.ParamInt("id")
 		if err != nil {
 			log.Println(err)
@@ -48,6 +60,21 @@ func GetUser() func(*iris.Context) {
 			ctx.JSON(iris.StatusOK, map[string]string{"error": "user not found"})
 		} else {
 			ctx.JSON(iris.StatusOK, *userp)
+		}
+	}
+}
+
+func AddUser() func(*iris.Context) {
+	return func(ctx *iris.Context) {
+		user := User{}
+		err := ctx.ReadJSON(&user)
+		if err != nil {
+			log.Println(err)
+			ctx.JSON(iris.StatusBadRequest, map[string]string{"error": "bad request"})
+		} else {
+			user.Id = nextId()
+			users = append(users, user)
+			ctx.JSON(iris.StatusOK, user)
 		}
 	}
 }

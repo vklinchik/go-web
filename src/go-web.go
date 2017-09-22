@@ -6,6 +6,7 @@ import (
 	//"flag"
 	//"log"
 	"webserver"
+	"xlog"
 	"github.com/urfave/cli"
 )
 
@@ -24,11 +25,14 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.IntFlag{
 			Name:   "port, p",
-			Value:  8081,
+			Value:  8080,
 			EnvVar: "GOWEB_PORT",
 			Usage:  "Listening port",
 		},
 	}
+
+	xlog.ConfigureLogger(xlog.LogLevelDebug)
+	//logger := xlog.GetLogger()
 
 	app.Action = func(ctx *cli.Context) error {
 		err := validateContext(ctx)
